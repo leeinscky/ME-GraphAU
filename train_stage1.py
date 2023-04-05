@@ -42,6 +42,8 @@ def train(conf,net,train_loader,optimizer,epoch,criterion):
             inputs, targets = inputs.cuda(), targets.cuda()
         optimizer.zero_grad()
         outputs = net(inputs)
+        # print(f'[train_stage1.py] 正在执行train函数 模型的输入 inputs.shape = {inputs.shape} 模型的输出 outputs.shape = {outputs.shape}, 模型结构为net={net}') 
+        # 模型的输入 inputs.shape = torch.Size([3, 3, 224, 224]) 模型的输出 outputs.shape = torch.Size([3, 12])
         loss = criterion(outputs, targets)
         loss.backward()
         optimizer.step()

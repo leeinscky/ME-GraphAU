@@ -75,11 +75,16 @@ class GNN(nn.Module):
         bn_init(self.bne2)
 
     def forward(self, x, edge):
+        print('[MEFL.py] GNN, input x.shape:', x.shape, ', edge.shape:', edge.shape) # x.shape: [bs, 12, 512], edge.shape: [bs, 144, 512] 因为BP4D有12个节点，144个边
         # device
         dev = x.get_device()
+        # print('[MEFL.py] GNN, device: ', dev) # cpu: -1, gpu: 0, 1, 2, ...
         if dev >= 0:
             start = self.start.to(dev)
             end = self.end.to(dev)
+        else:
+            start = self.start
+            end = self.end
 
         # GNN Layer 1:
         res = x
@@ -118,6 +123,7 @@ class GNN(nn.Module):
         Uix = self.U2(x)  # V x H_out
         x = Uix + torch.einsum('ve, bec -> bvc', (end.t(), e * Ujx)) / self.num_classes  # V x H_out
         x = self.act(res + self.bnv2(x))
+        print('[MEFL.py] GNN, output x.shape:', x.shape, ', edge.shape:', edge.shape)
         return x, edge
 
 
@@ -150,25 +156,36 @@ class Head(nn.Module):
         nn.init.xavier_uniform_(self.sc)
 
     def forward(self, x):
+        print('\n[MEFL.py] class Head.forward, input x.shape: ', x.shape) # x.shape: [bs, 49, 512]
+        
         # AFG
         f_u = []
         for i, layer in enumerate(self.class_linears):
             f_u.append(layer(x).unsqueeze(1))
         f_u = torch.cat(f_u, dim=1)
         f_v = f_u.mean(dim=-2)
+        print('[MEFL.py] class Head.forward, f_u.shape: ', f_u.shape, 'f_v.shape: ', f_v.shape) # f_u.shape: [bs, 12, 49, 512], f_v.shape: [bs, 12, 512]
 
         # MEFL
         f_e = self.edge_extractor(f_u, x)
+        print('[MEFL.py] class Head.forward, edge_extractor 的输入参数 f_u.shape: ', f_u.shape, 'x.shape: ', x.shape, ', 计算结果 f_e.shape: ', f_e.shape) 
+        # f_u.shape: [bs, 12, 49, 512], x.shape: [bs, 49, 512], 计算结果 f_e.shape: [bs, 144, 49, 512]
         f_e = f_e.mean(dim=-2)
+        
+        print('[MEFL.py] class Head.forward, GNN的输入参数, f_v.shape: ', f_v.shape, 'f_e.shape: ', f_e.shape) # f_v.shape: [bs, 12, 512], f_e.shape: [bs, 144, 512]
         f_v, f_e = self.gnn(f_v, f_e)
+        print('[MEFL.py] class Head.forward, after self.gnn, f_v.shape: ', f_v.shape, 'f_e.shape: ', f_e.shape) # f_v.shape: [bs, 12, 512], f_e.shape: [bs, 144, 512]
 
         b, n, c = f_v.shape
         sc = self.sc
         sc = self.relu(sc)
         sc = F.normalize(sc, p=2, dim=-1)
-        cl = F.normalize(f_v, p=2, dim=-1)
+        cl = F.normalize(f_v, p=2, dim=-1) # cl means class logits
+        print('[MEFL.py] class Head.forward, after F.normalize, cl.shape: ', cl.shape, 'sc.shape: ', sc.shape) # cl.shape: [bs, 12, 512], sc.shape: [12, 512]
+        
         cl = (cl * sc.view(1, n, c)).sum(dim=-1, keepdim=False)
         cl_edge = self.edge_fc(f_e)
+        print('[MEFL.py] class Head.forward, final return cl.shape: ', cl.shape, 'cl_edge.shape: ', cl_edge.shape) # cl.shape: [bs, 12], cl_edge.shape: [bs, 144, 4]
         return cl, cl_edge
 
 

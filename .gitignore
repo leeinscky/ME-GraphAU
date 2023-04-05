@@ -1,0 +1,5 @@
+data/BP4D/img/*
+data/BP4D/AUCoding/*
+checkpoints/*
+data/DISFA/ActionUnit_Labels/*
+results/*

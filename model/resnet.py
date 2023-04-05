@@ -144,6 +144,7 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
+        # print('[ResNet] input x shape: ', x.shape) # [bs, 3, 224, 224]
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
@@ -155,8 +156,11 @@ class ResNet(nn.Module):
         x = self.layer4(x)
 
         b,c,h,w = x.shape
-        x = x.view(b,c,-1).permute(0,2,1)
-
+        # print('[ResNet] after layers, x shape: ', x.shape) # [bs, 2048, 7, 7]
+        
+        x = x.view(b,c,-1).permute(0,2,1) # [bs, 2048, 7, 7] -> [bs, 2048, 49] -> [bs, 49, 2048]
+        # print('[ResNet] output x shape: ', x.shape) # [bs, 49, 2048]
+        
         return x
 
 

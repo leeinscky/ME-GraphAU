@@ -1,0 +1,111 @@
+/home/zl525/code/ME-GraphAU/conf.py:90: YAMLLoadWarning: calling yaml.load() without Loader=... is deprecated, as the default Loader is unsafe. Please read https://msg.pyyaml.org/load for full details.
+  datasets_cfg = yaml.load(f)
+----------------- Options ---------------
+                   N_fold: 3                             
+                      arc: resnet50                      
+               batch_size: 4                             
+                crop_size: 224                           
+                  dataset: BP4D                          
+             dataset_path: data/BP4D                     
+                   epochs: 1                             
+                 evaluate: False                         
+                 exp_name: resnet50_second_stage         
+                     fold: 1                             
+                  gpu_ids: 0                             
+                      lam: 0.05                          
+            learning_rate: 1e-05                         
+                   metric: dots                          
+             neighbor_num: 4                             
+              num_classes: 12                            
+              num_workers: 4                             
+            optimizer_eps: 1e-08                         
+                   outdir: results/resnet50_second_stage/bs_4_seed_0_lr_1e-05
+                   resume: results/resnet50_first_stage/bs_4_seed_0_lr_0.0001/cur_model_fold1.pth
+                     seed: 0                             
+             weight_decay: 0.0005                        
+----------------- End -------------------
+writting logs to file results/resnet50_second_stage/bs_4_seed_0_lr_1e-05/train.log
+Fold: [2 | 3  val_data_num: 2 ]
+Resume form | results/resnet50_first_stage/bs_4_seed_0_lr_0.0001/cur_model_fold1.pth ]
+Epoch: [1 | 1 LR: 1e-05 ]
+==> Preparing data...
+the init learning rate is  1e-05
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:04<00:13,  4.43s/it] 50%|█████     | 2/4 [00:06<00:06,  3.26s/it] 75%|███████▌  | 3/4 [00:09<00:02,  2.88s/it]100%|██████████| 4/4 [00:11<00:00,  2.70s/it]100%|██████████| 4/4 [00:11<00:00,  2.94s/it]
+
+[MEFL.py] class Head.forward, input x.shape:  torch.Size([4, 49, 512])
+[MEFL.py] class Head.forward, f_u.shape:  torch.Size([4, 12, 49, 512]) f_v.shape:  torch.Size([4, 12, 512])
+[graph_edge_model.py] class_feature.shape:  torch.Size([4, 12, 49, 512]) , global_feature.shape:  torch.Size([4, 49, 512])
+[graph_edge_model.py] after FAM, feat.shape:  torch.Size([4, 12, 49, 512])
+[graph_edge_model.py] after ARM, feat.shape:  torch.Size([4, 144, 49, 512]) , input param is feat_start.shape: torch.Size([4, 144, 49, 512]) , feat_end.shape: torch.Size([4, 144, 49, 512])
+[graph_edge_model.py] after edge_proj, final edge.shape:  torch.Size([4, 144, 49, 512])
+[MEFL.py] class Head.forward, edge_extractor 的输入参数 f_u.shape:  torch.Size([4, 12, 49, 512]) x.shape:  torch.Size([4, 49, 512]) , 计算结果 f_e.shape:  torch.Size([4, 144, 49, 512])
+[MEFL.py] class Head.forward, GNN的输入参数, f_v.shape:  torch.Size([4, 12, 512]) f_e.shape:  torch.Size([4, 144, 512])
+[MEFL.py] GNN, input x.shape: torch.Size([4, 12, 512]) , edge.shape: torch.Size([4, 144, 512])
+[MEFL.py] GNN, output x.shape: torch.Size([4, 12, 512]) , edge.shape: torch.Size([4, 144, 512])
+[MEFL.py] class Head.forward, after self.gnn, f_v.shape:  torch.Size([4, 12, 512]) f_e.shape:  torch.Size([4, 144, 512])
+[MEFL.py] class Head.forward, after F.normalize, cl.shape:  torch.Size([4, 12, 512]) sc.shape:  torch.Size([12, 512])
+[MEFL.py] class Head.forward, final return cl.shape:  torch.Size([4, 12]) cl_edge.shape:  torch.Size([4, 144, 4])
+
+[MEFL.py] class Head.forward, input x.shape:  torch.Size([4, 49, 512])
+[MEFL.py] class Head.forward, f_u.shape:  torch.Size([4, 12, 49, 512]) f_v.shape:  torch.Size([4, 12, 512])
+[graph_edge_model.py] class_feature.shape:  torch.Size([4, 12, 49, 512]) , global_feature.shape:  torch.Size([4, 49, 512])
+[graph_edge_model.py] after FAM, feat.shape:  torch.Size([4, 12, 49, 512])
+[graph_edge_model.py] after ARM, feat.shape:  torch.Size([4, 144, 49, 512]) , input param is feat_start.shape: torch.Size([4, 144, 49, 512]) , feat_end.shape: torch.Size([4, 144, 49, 512])
+[graph_edge_model.py] after edge_proj, final edge.shape:  torch.Size([4, 144, 49, 512])
+[MEFL.py] class Head.forward, edge_extractor 的输入参数 f_u.shape:  torch.Size([4, 12, 49, 512]) x.shape:  torch.Size([4, 49, 512]) , 计算结果 f_e.shape:  torch.Size([4, 144, 49, 512])
+[MEFL.py] class Head.forward, GNN的输入参数, f_v.shape:  torch.Size([4, 12, 512]) f_e.shape:  torch.Size([4, 144, 512])
+[MEFL.py] GNN, input x.shape: torch.Size([4, 12, 512]) , edge.shape: torch.Size([4, 144, 512])
+[MEFL.py] GNN, output x.shape: torch.Size([4, 12, 512]) , edge.shape: torch.Size([4, 144, 512])
+[MEFL.py] class Head.forward, after self.gnn, f_v.shape:  torch.Size([4, 12, 512]) f_e.shape:  torch.Size([4, 144, 512])
+[MEFL.py] class Head.forward, after F.normalize, cl.shape:  torch.Size([4, 12, 512]) sc.shape:  torch.Size([12, 512])
+[MEFL.py] class Head.forward, final return cl.shape:  torch.Size([4, 12]) cl_edge.shape:  torch.Size([4, 144, 4])
+
+[MEFL.py] class Head.forward, input x.shape:  torch.Size([4, 49, 512])
+[MEFL.py] class Head.forward, f_u.shape:  torch.Size([4, 12, 49, 512]) f_v.shape:  torch.Size([4, 12, 512])
+[graph_edge_model.py] class_feature.shape:  torch.Size([4, 12, 49, 512]) , global_feature.shape:  torch.Size([4, 49, 512])
+[graph_edge_model.py] after FAM, feat.shape:  torch.Size([4, 12, 49, 512])
+[graph_edge_model.py] after ARM, feat.shape:  torch.Size([4, 144, 49, 512]) , input param is feat_start.shape: torch.Size([4, 144, 49, 512]) , feat_end.shape: torch.Size([4, 144, 49, 512])
+[graph_edge_model.py] after edge_proj, final edge.shape:  torch.Size([4, 144, 49, 512])
+[MEFL.py] class Head.forward, edge_extractor 的输入参数 f_u.shape:  torch.Size([4, 12, 49, 512]) x.shape:  torch.Size([4, 49, 512]) , 计算结果 f_e.shape:  torch.Size([4, 144, 49, 512])
+[MEFL.py] class Head.forward, GNN的输入参数, f_v.shape:  torch.Size([4, 12, 512]) f_e.shape:  torch.Size([4, 144, 512])
+[MEFL.py] GNN, input x.shape: torch.Size([4, 12, 512]) , edge.shape: torch.Size([4, 144, 512])
+[MEFL.py] GNN, output x.shape: torch.Size([4, 12, 512]) , edge.shape: torch.Size([4, 144, 512])
+[MEFL.py] class Head.forward, after self.gnn, f_v.shape:  torch.Size([4, 12, 512]) f_e.shape:  torch.Size([4, 144, 512])
+[MEFL.py] class Head.forward, after F.normalize, cl.shape:  torch.Size([4, 12, 512]) sc.shape:  torch.Size([12, 512])
+[MEFL.py] class Head.forward, final return cl.shape:  torch.Size([4, 12]) cl_edge.shape:  torch.Size([4, 144, 4])
+
+[MEFL.py] class Head.forward, input x.shape:  torch.Size([4, 49, 512])
+[MEFL.py] class Head.forward, f_u.shape:  torch.Size([4, 12, 49, 512]) f_v.shape:  torch.Size([4, 12, 512])
+[graph_edge_model.py] class_feature.shape:  torch.Size([4, 12, 49, 512]) , global_feature.shape:  torch.Size([4, 49, 512])
+[graph_edge_model.py] after FAM, feat.shape:  torch.Size([4, 12, 49, 512])
+[graph_edge_model.py] after ARM, feat.shape:  torch.Size([4, 144, 49, 512]) , input param is feat_start.shape: torch.Size([4, 144, 49, 512]) , feat_end.shape: torch.Size([4, 144, 49, 512])
+[graph_edge_model.py] after edge_proj, final edge.shape:  torch.Size([4, 144, 49, 512])
+[MEFL.py] class Head.forward, edge_extractor 的输入参数 f_u.shape:  torch.Size([4, 12, 49, 512]) x.shape:  torch.Size([4, 49, 512]) , 计算结果 f_e.shape:  torch.Size([4, 144, 49, 512])
+[MEFL.py] class Head.forward, GNN的输入参数, f_v.shape:  torch.Size([4, 12, 512]) f_e.shape:  torch.Size([4, 144, 512])
+[MEFL.py] GNN, input x.shape: torch.Size([4, 12, 512]) , edge.shape: torch.Size([4, 144, 512])
+[MEFL.py] GNN, output x.shape: torch.Size([4, 12, 512]) , edge.shape: torch.Size([4, 144, 512])
+[MEFL.py] class Head.forward, after self.gnn, f_v.shape:  torch.Size([4, 12, 512]) f_e.shape:  torch.Size([4, 144, 512])
+[MEFL.py] class Head.forward, after F.normalize, cl.shape:  torch.Size([4, 12, 512]) sc.shape:  torch.Size([12, 512])
+[MEFL.py] class Head.forward, final return cl.shape:  torch.Size([4, 12]) cl_edge.shape:  torch.Size([4, 144, 4])
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.54it/s][dataset.py] 获取数据__getitem__ 最终return的 img.shape: torch.Size([3, 224, 224]), label.shape: (12,)
+[dataset.py] 获取数据__getitem__ 最终return的 img.shape: torch.Size([3, 224, 224]), label.shape: (12,)
+100%|██████████| 1/1 [00:00<00:00,  1.47it/s]
+{'Epoch:  1   train_loss: 0.39940 wa_loss: 0.32448 edge_loss: 1.49844 val_loss: 0.31136  val_mean_f1_score 0.00,val_mean_acc 83.33'}
+{'F1-score-list:'}
+{'AU1: 0.00 AU2: 0.00 AU4: 0.00 AU6: 0.00 AU7: 0.00 AU10: 0.00 AU12: 0.00 AU14: 0.00 AU15: 0.00 AU17: 0.00 AU23: 0.00 AU24: 0.00 '}
+{'Acc-list:'}
+{'AU1: 100.00 AU2: 100.00 AU4: 100.00 AU6: 100.00 AU7: 0.00 AU10: 100.00 AU12: 100.00 AU14: 100.00 AU15: 100.00 AU17: 100.00 AU23: 0.00 AU24: 100.00 '}
+
+[MEFL.py] class Head.forward, input x.shape:  torch.Size([2, 49, 512])
+[MEFL.py] class Head.forward, f_u.shape:  torch.Size([2, 12, 49, 512]) f_v.shape:  torch.Size([2, 12, 512])
+[graph_edge_model.py] class_feature.shape:  torch.Size([2, 12, 49, 512]) , global_feature.shape:  torch.Size([2, 49, 512])
+[graph_edge_model.py] after FAM, feat.shape:  torch.Size([2, 12, 49, 512])
+[graph_edge_model.py] after ARM, feat.shape:  torch.Size([2, 144, 49, 512]) , input param is feat_start.shape: torch.Size([2, 144, 49, 512]) , feat_end.shape: torch.Size([2, 144, 49, 512])
+[graph_edge_model.py] after edge_proj, final edge.shape:  torch.Size([2, 144, 49, 512])
+[MEFL.py] class Head.forward, edge_extractor 的输入参数 f_u.shape:  torch.Size([2, 12, 49, 512]) x.shape:  torch.Size([2, 49, 512]) , 计算结果 f_e.shape:  torch.Size([2, 144, 49, 512])
+[MEFL.py] class Head.forward, GNN的输入参数, f_v.shape:  torch.Size([2, 12, 512]) f_e.shape:  torch.Size([2, 144, 512])
+[MEFL.py] GNN, input x.shape: torch.Size([2, 12, 512]) , edge.shape: torch.Size([2, 144, 512])
+[MEFL.py] GNN, output x.shape: torch.Size([2, 12, 512]) , edge.shape: torch.Size([2, 144, 512])
+[MEFL.py] class Head.forward, after self.gnn, f_v.shape:  torch.Size([2, 12, 512]) f_e.shape:  torch.Size([2, 144, 512])
+[MEFL.py] class Head.forward, after F.normalize, cl.shape:  torch.Size([2, 12, 512]) sc.shape:  torch.Size([12, 512])
+[MEFL.py] class Head.forward, final return cl.shape:  torch.Size([2, 12]) cl_edge.shape:  torch.Size([2, 144, 4])

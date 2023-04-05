@@ -43,13 +43,17 @@ class GEM(nn.Module):
         self.bn.bias.data.zero_()
 
     def forward(self, class_feature, global_feature):
+        print('[graph_edge_model.py] class_feature.shape: ', class_feature.shape, ', global_feature.shape: ', global_feature.shape) # class_feature.shape: [bs, 12, 49, 512] , global_feature.shape: [bs, 49, 512]
         B, N, D, C = class_feature.shape
         global_feature = global_feature.repeat(1, N, 1).view(B, N, D, C)
         feat = self.FAM(class_feature, global_feature)
+        print('[graph_edge_model.py] after FAM, feat.shape: ', feat.shape) # feat.shape: [bs, 12, 49, 512]
         feat_end = feat.repeat(1, 1, N, 1).view(B, -1, D, C)
         feat_start = feat.repeat(1, N, 1, 1).view(B, -1, D, C)
         feat = self.ARM(feat_start, feat_end)
+        print('[graph_edge_model.py] after ARM, feat.shape: ', feat.shape, ', input param is feat_start.shape:', feat_start.shape, ', feat_end.shape:', feat_end.shape) # feat.shape: [bs, 144, 49, 512], input param is feat_start.shape: [bs, 144, 49, 512], feat_end.shape: [bs, 144, 49, 512]
         edge = self.bn(self.edge_proj(feat))
+        print('[graph_edge_model.py] after edge_proj, final edge.shape: ', edge.shape) # edge.shape: [bs, 144, 49, 512]
         return edge
 
 
